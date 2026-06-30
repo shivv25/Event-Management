@@ -553,7 +553,7 @@ function saveFallback() {
 
 // Initialize connection
 async function initDB() {
-  const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/event-manager";
+  const mongoURI = process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://127.0.0.1:27017/event-manager";
   try {
     console.log(`Connecting to MongoDB at: ${mongoURI}...`);
     // Set connection timeout to 3 seconds so fallback loads quickly if mongo is not running

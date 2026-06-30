@@ -18,25 +18,31 @@ async function initMail() {
       auth: { user, pass }
     });
   } else {
-    console.log("SMTP configuration missing in .env. Creating Ethereal SMTP test account...");
-    try {
-      const testAccount = await nodemailer.createTestAccount();
-      transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass
-        }
-      });
-      console.log(`===================================================`);
-      console.log(`🚀 Ethereal SMTP Test Account created!`);
-      console.log(`✉️ Username: ${testAccount.user}`);
-      console.log(`🔑 Password: ${testAccount.pass}`);
-      console.log(`===================================================`);
-    } catch (err) {
-      console.error("Failed to create Ethereal SMTP account. Emails will fallback to logs only.", err);
+    // Skip Ethereal test accounts creation in production serverless environments to avoid function timeouts
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      console.log("SMTP configuration missing. In production serverless mode, email transmissions will fallback to server logs.");
+      transporter = null;
+    } else {
+      console.log("SMTP configuration missing in .env. Creating Ethereal SMTP test account...");
+      try {
+        const testAccount = await nodemailer.createTestAccount();
+        transporter = nodemailer.createTransport({
+          host: 'smtp.ethereal.email',
+          port: 587,
+          secure: false,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass
+          }
+        });
+        console.log(`===================================================`);
+        console.log(`🚀 Ethereal SMTP Test Account created!`);
+        console.log(`✉️ Username: ${testAccount.user}`);
+        console.log(`🔑 Password: ${testAccount.pass}`);
+        console.log(`===================================================`);
+      } catch (err) {
+        console.error("Failed to create Ethereal SMTP account. Emails will fallback to logs only.", err);
+      }
     }
   }
 }
