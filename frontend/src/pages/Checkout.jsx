@@ -380,23 +380,50 @@ function Checkout({ event, token, user, onClose, navigateTo, showNotification })
                 <QrCode size={14} color="var(--accent-cyan)" /> Scan QR Code via GPay, PhonePe, or Paytm
               </span>
               
-              {/* Dynamic Padded Container generating price-aware UPI QR Code */}
+              {/* Dynamic Padded Container generating price-aware UPI QR Code superimposed on user's custom card layout */}
               <div style={{
-                background: '#fff',
-                padding: '12px',
-                borderRadius: '16px',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
-                display: 'inline-block',
-                lineHeight: 0,
+                width: '240px',
+                height: '240px',
                 position: 'relative',
+                backgroundImage: `url('/payment_qr.jpg')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '20px',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 overflow: 'hidden'
               }}>
-                <QRCodeSVG 
-                  value={`upi://pay?pa=vishalsingh2526@fam&pn=VibePass&am=${event.price}&cu=INR&tn=Booking_${event.title.replace(/\s+/g, '_')}`}
-                  size={180}
-                  level="M"
-                  fgColor="#19120f"
-                />
+                <div style={{
+                  position: 'absolute',
+                  top: '40px',
+                  left: '40px',
+                  width: '160px',
+                  height: '160px',
+                  background: '#ffffff',
+                  padding: '6px',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <QRCodeSVG 
+                    value={`upi://pay?pa=vishalsingh2526@fam&pn=VibePass&am=${event.price}&cu=INR&tn=Booking_${event.title.replace(/\s+/g, '_')}`}
+                    size={148}
+                    level="H"
+                    fgColor="#19120f"
+                    imageSettings={{
+                      src: "https://icons.iconarchive.com/icons/simpleicons-team/simple/128/fampay-icon.png",
+                      x: null,
+                      y: null,
+                      height: 24,
+                      width: 24,
+                      excavate: true
+                    }}
+                  />
+                </div>
                 
                 {/* Glowing Scanning Radar Animation Effect */}
                 <div style={{
