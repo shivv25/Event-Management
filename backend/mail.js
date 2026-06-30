@@ -4,10 +4,10 @@ let transporter = null;
 
 // Initialize mail transport
 async function initMail() {
-  const host = process.env.SMTP_HOST;
-  const port = process.env.SMTP_PORT || 587;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const host = process.env.SMTP_HOST ? process.env.SMTP_HOST.trim() : null;
+  const port = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT.toString().trim()) : 587;
+  const user = process.env.SMTP_USER ? process.env.SMTP_USER.trim() : null;
+  const pass = process.env.SMTP_PASS ? process.env.SMTP_PASS.trim() : null;
 
   if (host && user && pass) {
     console.log(`Configuring custom SMTP transport at ${host}:${port}...`);
@@ -16,6 +16,15 @@ async function initMail() {
       port: Number(port),
       secure: port == 465,
       auth: { user, pass }
+    });
+    
+    // Verify transporter connection on startup to catch auth errors in logs immediately
+    transporter.verify((err) => {
+      if (err) {
+        console.error("SMTP Mail Transporter verification failed on startup:", err);
+      } else {
+        console.log("SMTP Mail Transporter connection verified and ready!");
+      }
     });
   } else {
     // Skip Ethereal test accounts creation in production serverless environments to avoid function timeouts

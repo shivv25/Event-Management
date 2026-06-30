@@ -445,9 +445,6 @@ const DEFAULT_DATA = {
   ]
 };
 
-// Force all default event prices to 19 INR
-DEFAULT_DATA.events.forEach(e => { e.price = 19; });
-DEFAULT_DATA.bookings.forEach(b => { if (b.paymentDetails) b.paymentDetails.amount = 19; });
 
 // State
 let isMongoConnected = false;
@@ -563,9 +560,6 @@ async function initDB() {
     isMongoConnected = true;
     console.log("MongoDB connected successfully! Using Mongoose Models.");
     
-    // Force update all events and bookings in MongoDB to 19 INR
-    await MongoEvent.updateMany({}, { $set: { price: 19 } });
-    await MongoBooking.updateMany({}, { $set: { "paymentDetails.amount": 19 } });
 
     hashDefaultUsers();
 
