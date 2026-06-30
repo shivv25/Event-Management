@@ -9,7 +9,7 @@ import MyTickets from './pages/MyTickets';
 import UserDashboard from './pages/UserDashboard';
 import { Calendar, Ticket, LayoutDashboard, Scan, LogIn, LogOut, User, Sun, Moon } from 'lucide-react';
 
-export const API_URL = 'http://127.0.0.1:5000/api';
+export const API_URL = '/api';
 
 function App() {
   const [user, setUser] = useState(null);
