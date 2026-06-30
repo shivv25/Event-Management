@@ -1,0 +1,16 @@
+{
+  "name": "event-management-system",
+  "version": "1.0.0",
+  "description": "Event Management System with ticket booking, payment integration, analytics dashboard, and QR check-in.",
+  "scripts": {
+    "install-all": "npm install && npm run install-backend && npm run install-frontend",
+    "install-backend": "cd backend && npm install",
+    "install-frontend": "cd frontend && npm install",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

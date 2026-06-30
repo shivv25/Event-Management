@@ -1,0 +1,694 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+:root {
+  /* Cosmic Neon Party Palette */
+  --bg-primary: #07030e;
+  --bg-secondary: #0f0a22;
+  --bg-card: rgba(18, 12, 38, 0.65);
+  
+  --accent-violet: #8a2be2; /* Electric Violet */
+  --accent-pink: #ff007f;   /* Hot Neon Pink */
+  --accent-cyan: #00f5d4;   /* High-Energy Aqua Cyan */
+  --accent-gold: #ffb703;   /* Glow Amber */
+  
+  --text-primary: #fbf9ff;   /* Warm Crystal White */
+  --text-secondary: #b8b3d6; /* Soft Cyber Silver */
+  --text-muted: #6e678e;     /* Cool Deep Velvet */
+  
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-neon: rgba(255, 0, 127, 0.4); 
+  
+  --neon-glow-violet: 0 0 20px rgba(138, 43, 226, 0.3);
+  --neon-glow-pink: 0 0 25px rgba(255, 0, 127, 0.35);
+  --neon-glow-cyan: 0 0 20px rgba(0, 245, 212, 0.3);
+
+  --font-display: 'Fraunces', 'Playfair Display', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+body.light-mode {
+  --bg-primary: #f2f2fa;
+  --bg-secondary: #e6e6f5;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  
+  --accent-violet: #6200ea;
+  --accent-pink: #c51162;
+  --accent-cyan: #00b8d4;
+  --accent-gold: #ff6d00;
+  
+  --text-primary: #120b24;
+  --text-secondary: #4a4463;
+  --text-muted: #827b9c;
+  
+  --border-glass: rgba(18, 11, 36, 0.08);
+  --border-neon: rgba(197, 17, 98, 0.25);
+  
+  --neon-glow-violet: 0 8px 20px rgba(98, 0, 234, 0.1);
+  --neon-glow-pink: 0 8px 20px rgba(197, 17, 98, 0.1);
+  --neon-glow-cyan: 0 8px 20px rgba(0, 184, 212, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Floating Ambient Blur Concert Orbs */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  width: 45vw;
+  height: 45vw;
+  border-radius: 50%;
+  filter: blur(140px);
+  z-index: -2;
+  opacity: 0.32;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+body::before {
+  top: -12vw;
+  left: -10vw;
+  background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
+  animation: floatOrb1 25s ease-in-out infinite;
+}
+
+body::after {
+  bottom: -15vw;
+  right: -10vw;
+  background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+  animation: floatOrb2 25s ease-in-out infinite alternate;
+}
+
+body.light-mode::before, body.light-mode::after {
+  mix-blend-mode: multiply;
+  opacity: 0.15;
+}
+
+@keyframes floatOrb1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(10vw, 8vw) scale(1.15); }
+}
+
+@keyframes floatOrb2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-8vw, -10vw) scale(1.08); }
+}
+
+/* Typography styling */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--accent-pink), var(--accent-violet));
+  border: 2px solid var(--bg-primary);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* Tactile 3D Glassmorphism Panel */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -60%; width: 30%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.12), transparent);
+  transform: rotate(30deg);
+  transition: transform 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-neon);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(255, 0, 127, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-panel:hover::after {
+  transform: translate(500%, 0) rotate(30deg);
+}
+
+/* Mindblowing 3D Tactile Action Buttons */
+.btn-neon-violet {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--accent-violet) 0%, #b5179e 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 
+    0 6px 0 #5c1bb5, 
+    0 12px 25px rgba(138, 43, 226, 0.35);
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.btn-neon-violet:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 0 #5c1bb5, 
+    0 15px 30px rgba(138, 43, 226, 0.5);
+}
+
+.btn-neon-violet:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 0 #5c1bb5, 
+    0 6px 15px rgba(138, 43, 226, 0.25);
+}
+
+.btn-neon-pink {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--accent-pink) 0%, #d90429 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 
+    0 6px 0 #b30059, 
+    0 12px 25px rgba(255, 0, 127, 0.35);
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.btn-neon-pink:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 0 #b30059, 
+    0 15px 30px rgba(255, 0, 127, 0.5);
+}
+
+.btn-neon-pink:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 0 #b30059, 
+    0 6px 15px rgba(255, 0, 127, 0.25);
+}
+
+.btn-neon-cyan {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, #00bbf9 100%);
+  color: #07030e;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 
+    0 6px 0 #0096c7, 
+    0 12px 25px rgba(0, 245, 212, 0.3);
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.btn-neon-cyan:hover {
+  transform: translateY(-2px);
+  color: #07030e;
+  box-shadow: 
+    0 8px 0 #0096c7, 
+    0 15px 30px rgba(0, 245, 212, 0.45);
+}
+
+.btn-neon-cyan:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 0 #0096c7, 
+    0 6px 15px rgba(0, 245, 212, 0.2);
+}
+
+.btn-glass {
+  font-family: var(--font-body);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+  border-radius: 16px;
+  padding: 13px 28px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    0 6px 0 rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 0 rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-glass:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.floating {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Dynamic Event Card with 3D Tactile Tilt */
+.tilt-card-wrapper {
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.tilt-card {
+  position: relative;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform-style: preserve-3d;
+}
+
+.tilt-card:hover {
+  border-color: rgba(255, 0, 127, 0.4);
+  transform: translateY(-5px) rotateX(2deg);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.45),
+    0 0 35px rgba(255, 0, 127, 0.22);
+}
+
+.tilt-card-image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.tilt-card-image::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, transparent 40%, rgba(7, 3, 14, 0.95) 100%);
+  pointer-events: none;
+}
+
+.tilt-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.tilt-card:hover .tilt-card-image img {
+  transform: scale(1.08);
+}
+
+.tilt-card-content {
+  padding: 26px;
+  transform: translateZ(50px); /* 3D layer pop out */
+}
+
+/* 3D Ticket Flip Card styling (Boarding Pass) */
+.ticket-3d-container {
+  perspective: 1800px;
+  width: 100%;
+  max-width: 480px;
+  height: 540px;
+  margin: 0 auto;
+}
+
+.ticket-3d-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  cursor: pointer;
+}
+
+.ticket-3d-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.ticket-front, .ticket-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  background: radial-gradient(circle at top right, rgba(255, 0, 127, 0.15), var(--bg-card) 75%);
+}
+
+.ticket-back {
+  transform: rotateY(180deg);
+  background: radial-gradient(circle at top left, rgba(0, 245, 212, 0.15), var(--bg-card) 75%);
+}
+
+/* Boarding Pass perforated lines */
+.ticket-header {
+  padding: 32px 32px 20px;
+  border-bottom: 2.5px dashed rgba(255, 255, 255, 0.15);
+  position: relative;
+}
+
+/* Real Concert Ticket circular side notches */
+.ticket-header::before, .ticket-header::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  z-index: 10;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+}
+.ticket-header::before { left: -16px; }
+.ticket-header::after { right: -16px; }
+
+.ticket-body {
+  padding: 32px;
+}
+
+.ticket-footer {
+  padding: 20px 32px 32px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Tactile Holographic Credit Card */
+.credit-card-perspective {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 380px;
+  height: 220px;
+  margin: 0 auto 30px;
+}
+
+.credit-card-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+.credit-card-3d.flipped {
+  transform: rotateY(180deg);
+}
+
+.cc-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 24px;
+  padding: 26px;
+  color: white;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cc-front {
+  background: linear-gradient(135deg, #130326 0%, #2f0743 50%, #0d0118 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+}
+
+.cc-front::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(125deg, rgba(255,255,255,0.08) 0%, rgba(255,0,127,0.08) 40%, rgba(0,245,212,0.08) 70%, transparent 100%);
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+.cc-back {
+  background: linear-gradient(135deg, #0d0118 0%, #05000a 100%);
+  transform: rotateY(180deg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 26px 0;
+}
+
+.cc-chip {
+  width: 50px;
+  height: 38px;
+  background: linear-gradient(135deg, #ffdf00 0%, #ff8800 100%);
+  border-radius: 8px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 10px rgba(255, 223, 0, 0.3);
+}
+
+.cc-black-bar {
+  background: #000;
+  height: 48px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.cc-signature-strip {
+  background: rgba(255, 255, 255, 0.9);
+  height: 36px;
+  width: 75%;
+  margin: 15px 26px 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  color: #111;
+  font-family: monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* App Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 8%;
+  background: rgba(7, 3, 14, 0.75);
+  backdrop-filter: blur(24px);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--accent-pink), var(--accent-violet), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -1px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 35px;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0; width: 0%; height: 2px;
+  background: var(--accent-pink);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-primary);
+  text-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+}
+
+/* Page Container Layout */
+.page-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 24px;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 18px;
+  border-radius: 16px;
+  color: #fff;
+  font-family: var(--font-body);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-pink);
+  box-shadow: 
+    0 0 15px rgba(255, 0, 127, 0.25),
+    inset 0 0 8px rgba(255, 0, 127, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Badges - Dynamic Glowing Neon Pills */
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.badge-music { 
+  background: rgba(255, 0, 127, 0.12); 
+  color: #ff007f; 
+  border: 1px solid rgba(255, 0, 127, 0.35); 
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.2); 
+}
+
+.badge-technology { 
+  background: rgba(0, 245, 212, 0.12); 
+  color: #00f5d4; 
+  border: 1px solid rgba(0, 245, 212, 0.35); 
+  box-shadow: 0 0 12px rgba(0, 245, 212, 0.2); 
+}
+
+.badge-art { 
+  background: rgba(255, 158, 0, 0.12); 
+  color: #ff9e00; 
+  border: 1px solid rgba(255, 158, 0, 0.35); 
+  box-shadow: 0 0 12px rgba(255, 158, 0, 0.2); 
+}
+
+.badge-business { 
+  background: rgba(138, 43, 226, 0.12); 
+  color: #d8b4fe; 
+  border: 1px solid rgba(138, 43, 226, 0.35); 
+  box-shadow: 0 0 12px rgba(138, 43, 226, 0.2); 
+}
+
+/* Custom grid for event listings */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 36px;
+  margin-top: 36px;
+}
