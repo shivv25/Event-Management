@@ -49,12 +49,14 @@ function App() {
       if (res.ok) {
         const data = await res.json();
         setUser(data);
-      } else {
-        // Token expired or invalid
+      } else if (res.status === 401 || res.status === 403) {
+        // Token explicitly expired or invalid
         setToken('');
+      } else {
+        console.warn(`Server status ${res.status} during profile fetch. Session retained.`);
       }
     } catch (err) {
-      console.error("Error fetching user profile:", err);
+      console.error("Error fetching user profile (network offline):", err);
     }
   };
 
