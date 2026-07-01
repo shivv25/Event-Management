@@ -19,6 +19,15 @@ function App() {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [notification, setNotification] = useState(null);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [dbStatus, setDbStatus] = useState(null);
+
+  // Check database health on boot
+  useEffect(() => {
+    fetch(`${API_URL}/health`)
+      .then(res => res.json())
+      .then(data => setDbStatus(data.database))
+      .catch(() => setDbStatus('offline'));
+  }, []);
 
   // Sync theme
   useEffect(() => {
@@ -167,6 +176,29 @@ function App() {
           transition: 'all 0.3s ease'
         }}>
           {notification.message}
+        </div>
+      )}
+
+      {/* Ephemeral Warning Banner */}
+      {dbStatus === 'fallback_json' && (
+        <div style={{
+          background: 'linear-gradient(90deg, #c51162, #8a2be2)',
+          color: '#ffffff',
+          textAlign: 'center',
+          padding: '8px 24px',
+          fontSize: '12px',
+          fontWeight: 700,
+          letterSpacing: '0.5px',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.15)',
+          zIndex: 1000,
+          position: 'relative',
+          fontFamily: 'var(--font-body)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px'
+        }}>
+          ⚠️ Warning: Database is running in ephemeral Fallback Mode. Accounts and bookings will be wiped on page reload or container restart. Please configure MONGODB_URI to persist your data.
         </div>
       )}
 

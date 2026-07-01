@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
-const { sendOtpEmail, sendBillingAlertEmail } = require('./mail');
+const { sendOtpEmail, sendBillingAlertEmail, isSmtpReady } = require('./mail');
 const crypto = require('crypto');
 const Razorpay = require('razorpay');
 
@@ -82,7 +82,7 @@ router.post('/auth/register', async (req, res) => {
     // Send SMTP verification email
     const etherealPreviewUrl = await sendOtpEmail(emailKey, otp);
 
-    const isSandbox = !process.env.SMTP_HOST;
+    const isSandbox = !process.env.SMTP_HOST || !isSmtpReady();
     res.status(201).json({
       otpRequired: true,
       email: emailKey,
@@ -848,6 +848,14 @@ router.get('/analytics', authenticateToken, requireRole('organizer'), async (req
     console.error(err);
     res.status(500).json({ error: 'Failed to compute analytics data' });
   }
+});
+
+// Health Check Endpoint
+router.get('/health', async (req, res) => {
+  res.json({
+    status: 'ok',
+    database: db.isMongoConnected() ? 'mongodb' : 'fallback_json'
+  });
 });
 
 module.exports = router;
