@@ -89,8 +89,12 @@ router.post('/auth/register', async (req, res) => {
       ...(isSandbox ? { mockOtp: otp, etherealPreviewUrl } : {})
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server registration error' });
+    console.error("Server registration error:", err);
+    res.status(500).json({ 
+      error: 'Server registration error', 
+      details: err.message,
+      stack: err.stack 
+    });
   }
 });
 
@@ -123,8 +127,12 @@ router.post('/auth/login', async (req, res) => {
       user: { id: user._id, name: user.name, email: user.email, role: user.role, profilePicture: user.profilePicture }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server login error' });
+    console.error("Server login error:", err);
+    res.status(500).json({ 
+      error: 'Server login error', 
+      details: err.message,
+      stack: err.stack 
+    });
   }
 });
 
@@ -169,8 +177,12 @@ router.post('/auth/verify-otp', async (req, res) => {
       user: { id: newUser._id, name: newUser.name, email: newUser.email, role: newUser.role, profilePicture: newUser.profilePicture }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Registration OTP verification failed' });
+    console.error("Registration OTP verification failed:", err);
+    res.status(500).json({ 
+      error: 'Registration OTP verification failed', 
+      details: err.message,
+      stack: err.stack 
+    });
   }
 });
 
