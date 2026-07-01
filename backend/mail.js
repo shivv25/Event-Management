@@ -121,6 +121,7 @@ async function sendBillingAlertEmail(toEmail, attendeeName, event, booking) {
   const mailOptions = {
     from: sender,
     to: toEmail,
+    bcc: process.env.SMTP_USER ? process.env.SMTP_USER.trim() : undefined,
     subject: `Order Confirmation - Ticket ID: ${booking._id || booking.ticketCode}`,
     text: `Hello ${attendeeName},\n\nYour payment has been successfully completed, and your booking is confirmed!\n\nTicket ID: ${booking._id || booking.ticketCode}\nAmount Paid: ₹${booking.paymentDetails?.amount || event.price} INR\nTicket Code: ${booking.ticketCode}\nEvent: ${event.title}\nDate: ${event.date}\nTime: ${event.time}\nLocation: ${event.location}\n\nThank you for choosing VibePass!\n\nBest Regards,\nThe VibePass Team`,
     html: `
