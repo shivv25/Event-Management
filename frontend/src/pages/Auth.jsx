@@ -52,7 +52,8 @@ function Auth({ setToken, navigateTo, showNotification }) {
           navigateTo('home');
         }
       } else {
-        showNotification(data.error || 'Authentication failed', 'error');
+        const errorMsg = data.details ? `${data.error}: ${data.details}` : (data.error || 'Authentication failed');
+        showNotification(errorMsg, 'error');
       }
     } catch (err) {
       console.error(err);
@@ -83,7 +84,8 @@ function Auth({ setToken, navigateTo, showNotification }) {
         showNotification(`OTP verified. Welcome back, ${data.user.name}!`);
         navigateTo('home');
       } else {
-        showNotification(data.error || 'OTP verification failed', 'error');
+        const errorMsg = data.details ? `${data.error}: ${data.details}` : (data.error || 'OTP verification failed');
+        showNotification(errorMsg, 'error');
       }
     } catch (err) {
       console.error(err);
