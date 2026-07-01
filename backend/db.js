@@ -497,7 +497,7 @@ function loadFallback() {
 
       // Synchronize default event details in local JSON fallback
       DEFAULT_DATA.events.forEach(e => {
-        const mappedPrice = e.category === 'Music' ? 599 : e.category === 'Technology' ? 499 : e.category === 'Business' ? 299 : 99;
+        const mappedPrice = e.category === 'Music' ? 499 : e.category === 'Technology' ? 399 : e.category === 'Business' ? 299 : 99;
         e.price = mappedPrice;
         const existingIndex = fallbackStore.events.findIndex(fe => fe._id === e._id);
         if (existingIndex !== -1) {
@@ -513,14 +513,14 @@ function loadFallback() {
         if (existing) {
           if (!existing.paymentDetails) existing.paymentDetails = {};
           const event = DEFAULT_DATA.events.find(ev => ev._id === b.eventId);
-          existing.paymentDetails.amount = event ? event.price : 599;
+          existing.paymentDetails.amount = event ? event.price : 499;
         }
       });
 
-      // Migrate existing/custom event prices to range [99, 599]
+      // Migrate existing/custom event prices to range [99, 499]
       fallbackStore.events.forEach(e => {
-        if (e.price < 99 || e.price > 599) {
-          e.price = e.category === 'Music' ? 599 : e.category === 'Technology' ? 499 : e.category === 'Business' ? 299 : 99;
+        if (e.price < 99 || e.price > 499) {
+          e.price = e.category === 'Music' ? 499 : e.category === 'Technology' ? 399 : e.category === 'Business' ? 299 : 99;
         }
       });
       fallbackStore.bookings.forEach(b => {
@@ -582,7 +582,7 @@ async function initDB() {
     } else {
       console.log("Synchronizing default events details and price updates...");
       for (const e of DEFAULT_DATA.events) {
-        const mappedPrice = e.category === 'Music' ? 599 : e.category === 'Technology' ? 499 : e.category === 'Business' ? 299 : 99;
+        const mappedPrice = e.category === 'Music' ? 499 : e.category === 'Technology' ? 399 : e.category === 'Business' ? 299 : 99;
         e.price = mappedPrice;
         await MongoEvent.findByIdAndUpdate(
           e._id,
@@ -605,9 +605,9 @@ async function initDB() {
         );
       }
       
-      // Migrate any existing/custom MongoDB events whose prices are out of the [99, 599] range
-      await MongoEvent.updateMany({ price: { $lt: 99 } }, { $set: { price: 599 } });
-      await MongoEvent.updateMany({ price: { $gt: 599 } }, { $set: { price: 599 } });
+      // Migrate any existing/custom MongoDB events whose prices are out of the [99, 499] range
+      await MongoEvent.updateMany({ price: { $lt: 99 } }, { $set: { price: 499 } });
+      await MongoEvent.updateMany({ price: { $gt: 499 } }, { $set: { price: 499 } });
     }
 
     // Seed default bookings into MongoDB if empty
@@ -618,7 +618,7 @@ async function initDB() {
     } else {
       for (const b of DEFAULT_DATA.bookings) {
         const event = DEFAULT_DATA.events.find(ev => ev._id === b.eventId);
-        const amount = event ? event.price : 599;
+        const amount = event ? event.price : 499;
         await MongoBooking.findByIdAndUpdate(b._id, { $set: { "paymentDetails.amount": amount } });
       }
       // Migrate existing bookings to match their respective event price
