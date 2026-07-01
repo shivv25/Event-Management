@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
-const { sendOtpEmail, sendBillingAlertEmail, isSmtpReady } = require('./mail');
+const { sendOtpEmail, sendBillingAlertEmail } = require('./mail');
 const crypto = require('crypto');
 const Razorpay = require('razorpay');
 
@@ -82,7 +82,7 @@ router.post('/auth/register', async (req, res) => {
     // Send SMTP verification email
     const etherealPreviewUrl = await sendOtpEmail(emailKey, otp);
 
-    const isSandbox = !process.env.SMTP_HOST || !isSmtpReady();
+    const isSandbox = !process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS;
     res.status(201).json({
       otpRequired: true,
       email: emailKey,
