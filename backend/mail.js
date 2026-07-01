@@ -121,8 +121,8 @@ async function sendBillingAlertEmail(toEmail, attendeeName, event, booking) {
   const mailOptions = {
     from: sender,
     to: toEmail,
-    subject: `Booking Confirmed: ${event.title} - Ticket Issued!`,
-    text: `Hello ${attendeeName},\n\nYour ticket booking for ${event.title} has been confirmed successfully.\nEvent Details:\nDate: ${event.date}\nTime: ${event.time}\nLocation: ${event.location}\n\nTicket Code: ${booking.ticketCode}\nAmount Paid: ₹${event.price} INR\nTransaction Ref: ${booking.paymentDetails.paymentId}\n\nThank you for choosing VibePass!\n\nBest Regards,\nThe VibePass Team`,
+    subject: `Order Confirmation - Ticket ID: ${booking._id || booking.ticketCode}`,
+    text: `Hello ${attendeeName},\n\nYour payment has been successfully completed, and your booking is confirmed!\n\nTicket ID: ${booking._id || booking.ticketCode}\nAmount Paid: ₹${booking.paymentDetails?.amount || event.price} INR\nTicket Code: ${booking.ticketCode}\nEvent: ${event.title}\nDate: ${event.date}\nTime: ${event.time}\nLocation: ${event.location}\n\nThank you for choosing VibePass!\n\nBest Regards,\nThe VibePass Team`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 25px; border: 1px solid #d47a5f; border-radius: 16px; background-color: #fcfbfa; color: #19120f;">
         <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px dashed #d47a5f; padding-bottom: 20px;">
@@ -135,7 +135,7 @@ async function sendBillingAlertEmail(toEmail, attendeeName, event, booking) {
             Hello <strong>${attendeeName}</strong>,
           </p>
           <p style="font-size: 15px; line-height: 1.5; color: #3d302c;">
-            We are excited to confirm your booking for the following experience! Your digital ticket pass has been verified and registered securely in our gateway database.
+            Your payment has been successfully completed, and your booking is confirmed! Here are your ticket details:
           </p>
           
           <!-- Event details block -->
@@ -157,19 +157,19 @@ async function sendBillingAlertEmail(toEmail, attendeeName, event, booking) {
           <h4 style="margin: 20px 0 10px 0; color: #d47a5f; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Transaction Parameters</h4>
           <table style="width: 100%; font-size: 14px; color: #463b36; border-collapse: collapse; margin-bottom: 20px;">
             <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-              <td style="padding: 8px 0;">Ticket Price:</td>
-              <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #19120f;">₹${event.price}</td>
+              <td style="padding: 8px 0;">Ticket ID:</td>
+              <td style="padding: 8px 0; text-align: right; font-family: monospace; font-size: 12px; color: #19120f; font-weight: bold;">${booking._id || booking.ticketCode}</td>
             </tr>
             <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
               <td style="padding: 8px 0;">Amount Paid:</td>
-              <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #7ba68e;">₹${event.price} INR</td>
+              <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #7ba68e;">₹${booking.paymentDetails?.amount || event.price} INR</td>
             </tr>
             <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
               <td style="padding: 8px 0;">Transaction Ref (UTR):</td>
-              <td style="padding: 8px 0; text-align: right; font-family: monospace; font-size: 12px; color: #19120f;">${booking.paymentDetails.paymentId}</td>
+              <td style="padding: 8px 0; text-align: right; font-family: monospace; font-size: 12px; color: #19120f;">${booking.paymentDetails?.paymentId || 'N/A'}</td>
             </tr>
             <tr>
-              <td style="padding: 8px 0;">Pass Ticket Code:</td>
+              <td style="padding: 8px 0;">Ticket Pass Code:</td>
               <td style="padding: 8px 0; text-align: right; font-family: monospace; font-size: 12px; color: #d9a05b; font-weight: bold;">${booking.ticketCode}</td>
             </tr>
           </table>
@@ -180,7 +180,7 @@ async function sendBillingAlertEmail(toEmail, attendeeName, event, booking) {
         </div>
         
         <div style="text-align: center; font-size: 12px; color: #a36f37;">
-          <p style="margin: 0;">Thank you for your business! Enjoy the event.</p>
+          <p style="margin: 0;">Thank you for your booking! Enjoy the event.</p>
           <p style="margin: 5px 0 0 0;">&copy; 2026 VibePass Inc. All rights reserved.</p>
         </div>
       </div>
